@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Facturación MVC</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <style>
+        /* 🎨 Paleta azul oscuro */
+        :root {
+            --azul-oscuro-1: #041e42;
+            --azul-oscuro-2: #0a2647;
+            --azul-oscuro-3: #144272;
+            --azul-resaltado: #205295;
+            --texto-claro: #e6f1ff;
+        }
+
+        body {
+            background: var(--azul-oscuro-1);
+            color: var(--texto-claro);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* 🧭 Sidebar */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, var(--azul-oscuro-2), var(--azul-oscuro-3));
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 60px; /* espacio para el navbar */
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+            .sidebar .nav-link {
+                color: #bcd4f6;
+                padding: 10px 20px;
+                border-radius: 5px;
+                transition: all 0.2s ease;
+            }
+
+                .sidebar .nav-link:hover {
+                    background: var(--azul-resaltado);
+                    color: #fff;
+                }
+
+            .sidebar .submenu .nav-link {
+                font-size: 0.95rem;
+                padding-left: 40px;
+            }
+
+        /* 🌙 Contenido principal */
+        .content {
+            margin-left: 250px;
+            background: var(--azul-oscuro-1);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        /* 🧱 Navbar superior */
+        .navbar {
+            background: var(--azul-oscuro-3) !important;
+            color: var(--texto-claro);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            color: #fff !important;
+        }
+
+        /* 📱 Responsive */
+        /* media (max-width: 768px) {
+            .sidebar */
+
+        {
+            position: static;
+            width: 100%;
+            height: auto;
+        }
+
+        .content {
+            margin-left: 0;
+        }
+
+        }
+
+        /* 🦶 Footer */
+        footer.footer {
+            background: var(--azul-oscuro-3);
+            color: #9cb3d9;
+            text-align: center;
+            padding: 1rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 🧭 Navbar superior -->
+    <nav class="navbar navbar-expand-lg navbar-dark border-bottom box-shadow">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Facturación MVC</a>
+        </div>
+    </nav>
+
+    <!-- 📂 Sidebar con menús desplegables -->
+    <div class="sidebar">
+        <ul class="nav flex-column">
+            <!-- CLIENTES -->
+            <li class="nav-item">
+                <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#menuClientes" role="button">
+                    <span>👥 Clientes</span>
+                    <span>▾</span>
+                </a>
+                <div class="collapse submenu" id="menuClientes">
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a class="nav-link" asp-controller="Clientes" asp-action="Index">Listado</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Clientes" asp-action="Create">Nuevo</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <!-- CATEGORÍAS -->
+            <li class="nav-item mt-2">
+                <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#menuCategorias" role="button">
+                    <span>📦 Categorías</span>
+                    <span>▾</span>
+                </a>
+                <div class="collapse submenu" id="menuCategorias">
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a class="nav-link" asp-controller="Categorias" asp-action="Index">Listado</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Categorias" asp-action="Create">Nueva</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <!-- PRODUCTOS -->
+            <li class="nav-item mt-2">
+                <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#menuProductos" role="button">
+                    <span>🛒 Productos</span>
+                    <span>▾</span>
+                </a>
+                <div class="collapse submenu" id="menuProductos">
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a class="nav-link" asp-controller="Productos" asp-action="Index">Listado</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Productos" asp-action="Create">Nuevo</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 🌙 Contenido principal -->
+    <main class="content">
+        @RenderBody()
+    </main>
+
+    <!-- 🦶 Footer -->
+    <footer class="footer">
+        <div class="container">
+            &copy; 2025 - Facturación MVC
+        </div>
+    </footer>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
