@@ -14,6 +14,11 @@
             background: linear-gradient(90deg, var(--blue-dark-1), var(--blue-dark-2));
             color: #e6f4ff;
             border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom:0px;
+        }
+
+        .mb-3 {
+            margin-bottom: 1rem !important;
         }
 
         .custom-navbar .navbar-brand,
@@ -22,11 +27,21 @@
                 transition: color 0.2s ease-in-out;
         }
 
-        .custom-navbar .nav-link:hover {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: .25rem;
+        /* 🔹 Hace que los enlaces ocupen toda la altura del navbar */
+        .custom-navbar .nav-link {
+            height: 56px; /* Altura estándar del navbar Bootstrap */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 1rem;
+            margin: 0;
         }
+
+            /* 🔹 Efecto visual más completo al pasar el mouse */
+            .custom-navbar .nav-link:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+                border-radius: 0;
+            }
 
         .custom-navbar .btn-outline-primary {
                 border-color: #1f6f8b;
@@ -53,6 +68,10 @@
             --blue-dark-2: #0d3b66;
             --blue-dark-3: #073b4c;
             --blue-accent: #1f6f8b;
+        }
+
+        .sidebar {
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
         }
         .app-wrapper { min-height: calc(100vh - 56px); display: flex; }
         .sidebar {
@@ -88,18 +107,23 @@
             color: #e6eef6;
             padding: 1.5rem;
         }
-        /* Ajustes responsivos: colapsar sidebar en móviles */
-        @@media (max-width: 767.98px) {
-            .sidebar { width: 100%; min-width: auto; }
-            .app-wrapper { flex-direction: column; }
+
+        /* Footer  */
+
+        footer.footer {
+            background: #0f2233;
+            color: #d4e6ff;
+            text-align: center;
+            padding: 1rem 0;
+            border-top: none;
         }
-        /* Footer menor contraste en fondo oscuro */
-        footer.footer { background: rgba(0,0,0,0.15); color: #9fb7d8; padding: 1rem 0; }
+
+
     </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm custom-navbar border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm custom-navbar  box-shadow ">
             <div class="container-fluid">
                 <div class="d-flex align-items-center">
                     <!-- Botón para mostrar/ocultar sidebar en pantallas pequeñas -->
@@ -116,8 +140,8 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse mb-3">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="collapse navbar-collapse mb-3 justify-content-end">
+                    <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Principal" asp-action="Index">Principal</a>
                         </li>
@@ -209,9 +233,9 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer text-muted">
         <div class="container">
-            &copy; 2025 - Facturacion_MVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2025 - Facturacion_MVC  
         </div>
     </footer>
 
