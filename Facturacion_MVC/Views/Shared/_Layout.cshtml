@@ -1,5 +1,4 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,89 +8,42 @@
     <link rel="stylesheet" href="~/Facturacion_MVC.styles.css" asp-append-version="true" />
 
     <style>
+        :root {
+            --blue-dark-1: #052f5f;
+            --blue-dark-2: #0d3b66;
+            --blue-accent: #1f6f8b;
+        }
+
+        body { margin: 0; }
 
         .custom-navbar {
             background: linear-gradient(90deg, var(--blue-dark-1), var(--blue-dark-2));
             color: #e6f4ff;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            margin-bottom:0px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .mb-3 {
-            margin-bottom: 1rem !important;
-        }
-
-        .custom-navbar .navbar-brand,
         .custom-navbar .nav-link {
-                color: #cfe8ff;
-                transition: color 0.2s ease-in-out;
+            color: #cfe8ff;
+            transition: color 0.2s ease-in-out;
         }
 
-        /* 🔹 Hace que los enlaces ocupen toda la altura del navbar */
-        .custom-navbar .nav-link {
-            height: 56px; /* Altura estándar del navbar Bootstrap */
+        .custom-navbar .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .app-wrapper {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 1rem;
-            margin: 0;
+            min-height: calc(100vh - 56px);
         }
 
-            /* 🔹 Efecto visual más completo al pasar el mouse */
-            .custom-navbar .nav-link:hover {
-                background-color: rgba(255, 255, 255, 0.1);
-                border-radius: 0;
-            }
-
-        .custom-navbar .btn-outline-primary {
-                border-color: #1f6f8b;
-                color: #1f6f8b;
-        }
-
-        .custom-navbar .btn-outline-primary:hover {
-            background-color: #1f6f8b;
-            color: #fff;
-        }
-
-            /* Icono del toggle (☰) y bordes */
-        .custom-navbar .navbar-toggler {
-            border-color: rgba(255,255,255,0.3);
-        }
-
-        .custom-navbar .navbar-toggler-icon {
-            filter: invert(1);
-        }
-
-        /* Paleta de azules oscuros y layout del sidebar */
-        :root{
-            --blue-dark-1: #052f5f;
-            --blue-dark-2: #0d3b66;
-            --blue-dark-3: #073b4c;
-            --blue-accent: #1f6f8b;
-        }
-
-        .sidebar {
-            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
-        }
-        .app-wrapper { min-height: calc(100vh - 56px); display: flex; }
         .sidebar {
             width: 250px;
-            min-width: 220px;
             background: linear-gradient(180deg, var(--blue-dark-1), var(--blue-dark-2));
             color: #e6f4ff;
+            padding-top: 1rem;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
         }
-        .sidebar .nav-link {
-            color: #cfe8ff;
-        }
-        .sidebar .nav-link:hover {
-            color: #ffffff;
-            background: rgba(255,255,255,0.04);
-        }
-        .sidebar .nav-item .submenu .nav-link {
-            color: #eaf8ff;
-            font-size: .95rem;
-            padding-left: 1.6rem;
-        }
+
         .sidebar .section-title {
             font-weight: 600;
             color: var(--blue-accent);
@@ -100,60 +52,54 @@
             text-transform: uppercase;
             letter-spacing: .04em;
         }
-        /* Contenido principal */
-        .content {
-            flex: 1;
-            background: #0b1220; /* fondo oscuro neutro para el contenido */
-            color: #e6eef6;
-            padding: 1.5rem;
+
+        .sidebar .nav-link {
+            color: #e6f4ff;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            margin: 0.4rem 0;
+            text-align: center;
         }
 
-        /* Footer  */
+        .sidebar .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .submenu .nav-link {
+            background: none;
+            color: #cfe8ff;
+            text-align: left;
+            padding-left: 2rem;
+            font-size: .95rem;
+        }
+
+        .content {
+            flex: 1;
+            background: #0b1220;
+            color: #e6eef6;
+            padding: 2rem;
+        }
 
         footer.footer {
             background: #0f2233;
             color: #d4e6ff;
             text-align: center;
             padding: 1rem 0;
-            border-top: none;
         }
-
-
     </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm custom-navbar  box-shadow ">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm custom-navbar box-shadow">
             <div class="container-fluid">
-                <div class="d-flex align-items-center">
-                    <!-- Botón para mostrar/ocultar sidebar en pantallas pequeñas -->
-                    <button class="btn btn-sm btn-outline-primary me-2 d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar"
-                            aria-controls="sidebar" aria-expanded="false" aria-label="Toggle sidebar">
-                        ☰
-                    </button>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Facturacion_MVC</a>
 
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Facturacion_MVC</a>
-                </div>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse mb-3 justify-content-end">
+                <div class="collapse navbar-collapse justify-content-end">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Principal" asp-action="Index">Principal</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Principal" asp-action="Ayuda">Ayuda</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Principal" asp-action="Acerca">Acerca</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Principal" asp-action="Contacto">Contacto</a>
-                        </li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Principal" asp-action="Index">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Principal" asp-action="Acerca">Acerca</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Principal" asp-action="Ayuda">Ayuda</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Principal" asp-action="Contacto">Contacto</a></li>
                     </ul>
                 </div>
             </div>
@@ -161,86 +107,64 @@
     </header>
 
     <div class="app-wrapper container-fluid px-0">
-        <!-- Sidebar (colapsable en pantallas pequeñas) -->
-        <div class="collapse d-md-block sidebar" id="sidebar">
-            <div class="p-3">
-                <div class="section-title">Navegación</div>
+        <div class="sidebar">
+            <div class="section-title">Navegación</div>
+            <ul class="nav flex-column mt-2">
 
-                <ul class="nav flex-column mt-2">
-                    <!-- Clientes -->
-                    <li class="nav-item">
-                        <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
-                           href="#submenuClientes" role="button" aria-expanded="false" aria-controls="submenuClientes">
-                            <span>Clientes</span>
-                            <span class="badge bg-transparent text-light">▾</span>
-                        </a>
-                        <div class="collapse submenu" id="submenuClientes">
-                            <ul class="nav flex-column mt-1">
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Clientes" asp-action="Index">Listado</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Clientes" asp-action="Create">Nuevo</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
+                <!-- 🔹 TABLAS -->
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#submenuTablas" role="button" aria-expanded="false" aria-controls="submenuTablas">
+                        TABLAS
+                    </a>
+                    <div class="collapse submenu" id="submenuTablas">
+                        <ul class="nav flex-column mt-1">
+                            <li class="nav-item"><a class="nav-link" asp-controller="Clientes" asp-action="Index">Clientes</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Productos" asp-action="Index">Productos</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Categorias" asp-action="Index">Categorías</a></li>
+                        </ul>
+                    </div>
+                </li>
 
-                    <!-- Categorías -->
-                    <li class="nav-item mt-2">
-                        <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
-                           href="#submenuCategorias" role="button" aria-expanded="false" aria-controls="submenuCategorias">
-                            <span>Categorías</span>
-                            <span class="badge bg-transparent text-light">▾</span>
-                        </a>
-                        <div class="collapse submenu" id="submenuCategorias">
-                            <ul class="nav flex-column mt-1">
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Categorias" asp-action="Index">Listado</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Categorias" asp-action="Create">Nuevo</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
+                <!-- 🔹 FACTURAS -->
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#submenuFacturas" role="button" aria-expanded="false" aria-controls="submenuFacturas">
+                        FACTURAS
+                    </a>
+                    <div class="collapse submenu" id="submenuFacturas">
+                        <ul class="nav flex-column mt-1">
+                            <li class="nav-item"><a class="nav-link" asp-controller="Facturas" asp-action="Index">Facturas</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Seguridad" asp-action="Index">Seguridad</a></li>
+                        </ul>
+                    </div>
+                </li>
 
-                    <!-- Productos -->
-                    <li class="nav-item mt-2">
-                        <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
-                           href="#submenuProductos" role="button" aria-expanded="false" aria-controls="submenuProductos">
-                            <span>Productos</span>
-                            <span class="badge bg-transparent text-light">▾</span>
-                        </a>
-                        <div class="collapse submenu" id="submenuProductos">
-                            <ul class="nav flex-column mt-1">
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Productos" asp-action="Index">Listado</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Productos" asp-action="Create">Nuevo</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+                <!-- 🔹 SEGURIDAD -->
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#submenuSeguridad" role="button" aria-expanded="false" aria-controls="submenuSeguridad">
+                        SEGURIDAD
+                    </a>
+                    <div class="collapse submenu" id="submenuSeguridad">
+                        <ul class="nav flex-column mt-1">
+                            <li class="nav-item"><a class="nav-link" asp-controller="Empleados" asp-action="Index">Empleados</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Roles" asp-action="Index">Roles</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Seguridad" asp-action="Index">Seguridad</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
         </div>
 
-        <!-- Contenido principal -->
         <main class="content">
-            @RenderBody()           <!-- <-- aquí se inserta el HTML de cada vista -->
+            @RenderBody()
         </main>
     </div>
 
     <footer class="footer text-muted">
-        <div class="container">
-            &copy; 2025 - Facturacion_MVC  
-        </div>
+        <div class="container">&copy; 2025 - Facturacion_MVC</div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>     
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
