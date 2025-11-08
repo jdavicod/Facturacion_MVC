@@ -33,6 +33,16 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "Facturacion_MVC": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "environmentVariables": {
+        "AZURE_SQL_PASSWORD": "!myA5x5WmSTqp8W",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }
