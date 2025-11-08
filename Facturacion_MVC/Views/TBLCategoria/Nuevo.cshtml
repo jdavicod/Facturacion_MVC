@@ -1,8 +1,15 @@
-﻿
+﻿@model Facturacion_MVC.Models.TblcategoriaProd
 @{
     ViewData["Title"] = "Nuevo";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Nueva Categoria</h1>
+<h2 class="well">Nueva Categoria</h2>
 
+@using (Html.BeginForm("Nuevo", "TBLCategoria", FormMethod.Post))
+{
+    <p>@Html.LabelFor(d => d.StrDescripcion): @Html.TextBoxFor(d => d.StrDescripcion) </p>
+    
+    <input value="Guardar" type="submit" class="btn btn-success">
+    <a class="btn btn-primary" href="/TBLCategoria">Retornar</a>
+}
