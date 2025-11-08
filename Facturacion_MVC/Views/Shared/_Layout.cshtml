@@ -27,6 +27,13 @@
             transition: color 0.2s ease-in-out;
         }
 
+        .img-logo {
+            height: 36px;
+            width: auto;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
         .custom-navbar .nav-link:hover {
             background-color: rgba(255, 255, 255, 0.1);
         }
@@ -94,13 +101,25 @@
             color: antiquewhite;
             text-align: center;
         }
+
+        .custom-navbar .navbar-brand img,
+        .custom-navbar .navbar-brand .img-logo,
+        .custom-navbar .navbar-brand .logo {
+            max-height: 56px;
+            height: 56px;
+            width: auto;
+            display: inline-block;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm custom-navbar box-shadow">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Facturacion_MVC</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img class="logo" src="https://raw.githubusercontent.com/jdavicod/Facturacion_MVC/refs/heads/master/Facturacion_MVC/images/logo1.png" alt="Alternate Text" />
+                </a>
 
                 <div class="collapse navbar-collapse justify-content-end">
                     <ul class="navbar-nav ms-auto">
