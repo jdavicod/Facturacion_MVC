@@ -77,14 +77,22 @@
             flex: 1;
             background: #0b1220;
             color: #e6eef6;
-            padding: 2rem;
+            padding: 1rem;
         }
 
         footer.footer {
             background: #0f2233;
             color: #d4e6ff;
             text-align: center;
-            padding: 1rem 0;
+            padding: 0.2rem 0; /* Reduce el espacio interno */
+            height: 70px; /* Reduce la altura */
+            font-size: 0.8rem; /* Opcional: Reduce el tamaño del texto */
+        }
+
+
+        .table {
+            color: antiquewhite;
+            text-align: center;
         }
     </style>
 </head>
@@ -119,8 +127,8 @@
                     <div class="collapse submenu" id="submenuTablas">
                         <ul class="nav flex-column mt-1">
                             <li class="nav-item"><a class="nav-link" asp-controller="Clientes" asp-action="Index">Clientes</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="Productos" asp-action="Index">Productos</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="Categorias" asp-action="Index">Categorías</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="TBLProductos" asp-action="Index">Productos</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="TBLCategoria" asp-action="Index">Categorías</a></li>
                         </ul>
                     </div>
                 </li>
