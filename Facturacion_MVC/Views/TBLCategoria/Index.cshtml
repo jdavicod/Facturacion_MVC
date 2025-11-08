@@ -1,15 +1,15 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>    
-    
+<style>
+
     h2 {
         margin-top: 20px;
         margin-bottom: 20px;
     }
+
     .btn {
         margin-right: 5px;
     }
@@ -19,45 +19,43 @@
         border-collapse: collapse;
         margin-top: 20px;
     }
+
     th, td {
         padding: 12px;
         text-align: left;
         border-bottom: 1px solid #ddd;
     }
+
     th {
         background-color: #f2f2f2;
     }
+
     tr:hover {
         background-color: #f5f5f5;
     }
 </style>
 
-<h2>Productos</h2>
+<h2>Categorias</h2>
 
-<a href="#" class="btn btn-primary"> +Agregar Producto</a>
+<a href="~/TBLcategoria/Nuevo" class="btn btn-primary">  +Agregar Categoria</a>
 
 <table class="table table-hover">
     <tr>
-        <th>Id</th>
-        <th>Producto</th>
+        <th>IdProducto</th>
         <th>Categoria</th>
-        <th>Precio</th>
-        <th>Stock</th>
+        <th>Descripción</th>
         <th>Acciones</th>
     </tr>
     <tr>
         <td>1</td>
         <td>Compu</td>
         <td>Hardware</td>
-        <td>2300000</td>
-        <td>3</td>
+       
         <td><a href="#" class="btn btn-info">Editar</a><a href="#" class="btn btn-danger">Borrar</a></td>
     <tr>
         <td>2</td>
         <td>Compu</td>
         <td>Hardware</td>
-        <td>2300000</td>
-        <td>3</td>
         <td><a href="#" class="btn btn-info">Editar</a><a href="#" class="btn btn-danger">Borrar</a></td>
     </tr>
 
