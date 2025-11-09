@@ -21,6 +21,8 @@ namespace Facturacion_MVC.Controllers
         [HttpGet]
         public IActionResult Nuevo()
         {
+            FacturacionContext db = new FacturacionContext();
+            ViewBag.IdCategoria = new SelectList(db.TblcategoriaProds, "IdCategoria", "StrDescripcion");
             return View();
         }
 
@@ -31,78 +33,116 @@ namespace Facturacion_MVC.Controllers
         {
             try
             {
-                // Rellenos obligatorios del servidor antes de validar
+                // Inicializar valores automáticos
                 producto.DtmFechaModifica = DateTime.Now;
-                producto.StrUsuarioModifica = string.IsNullOrWhiteSpace(producto.StrUsuarioModifica) ? Environment.UserName : producto.StrUsuarioModifica;
-                //producto.StrCodigo = string.IsNullOrWhiteSpace(producto.StrCodigo) ? "12" : producto.StrCodigo;
-                producto.NumPrecioCompra ??= 0;
+                producto.StrUsuarioModifica = string.IsNullOrWhiteSpace(producto.StrUsuarioModifica)
+                    ? Environment.UserName
+                    : producto.StrUsuarioModifica;
 
-                // Eliminar propiedades de navegación del ModelState si no vienen en el formulario
+                // Quitar propiedades no enviadas
                 ModelState.Remove(nameof(producto.IdCategoriaNavigation));
                 ModelState.Remove(nameof(producto.StrUsuarioModifica));
-                //ModelState.Remove(nameof(producto.StrCodigo));
 
+                // Si el modelo no es válido, se vuelve a mostrar el formulario con errores
                 if (!ModelState.IsValid)
                 {
-                    // Recolectar errores de ModelState de forma segura
-                    var erroresAntes = ModelState
-                        .Where(kvp => kvp.Value != null && kvp.Value.Errors != null && kvp.Value.Errors.Count > 0)
-                        .Select(kvp => new
-                        {
-                            Key = kvp.Key,
-                            Errors = kvp.Value!.Errors
-                                .Select(e => string.IsNullOrEmpty(e.ErrorMessage) ? (e.Exception?.Message ?? "Error desconocido") : e.ErrorMessage)
-                                .ToArray()
-                        })
-                        .ToList();
-
-                    ViewBag.ModelErrors = erroresAntes;
+                    FacturacionContext db = new FacturacionContext();
+                    ViewBag.IdCategoria = new SelectList(db.TblcategoriaProds, "IdCategoria", "StrDescripcion", producto.IdCategoria);
                     return View(producto);
                 }
 
-                using var db = new FacturacionContext();
+                // Guardar en la base de datos
+                using var dbContext = new FacturacionContext();
+                dbContext.Tblproductos.Add(producto);
+                dbContext.SaveChanges();
 
-                db.Tblproductos.Add(producto);
+                // Mensaje de éxito temporal
+                TempData["SuccessMessage"] = "✅ Producto agregado correctamente.";
 
-                try
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Error al guardar: " + (ex.GetBaseException()?.Message ?? ex.Message));
+                FacturacionContext db = new FacturacionContext();
+                ViewBag.IdCategoria = new SelectList(db.TblcategoriaProds, "IdCategoria", "StrDescripcion", producto.IdCategoria);
+                return View(producto);
+            }
+        }
+
+
+        public ActionResult Editar(int id)
+        {
+            FacturacionContext db = new FacturacionContext();
+
+            var datoProducto = db.Tblproductos.Find(id);
+
+            FacturacionContext db2 = new FacturacionContext();
+            ViewBag.IdCategoria = new SelectList(db2.TblcategoriaProds, "IdCategoria", "StrDescripcion", datoProducto.IdCategoria);
+
+            return View(datoProducto);
+        }
+
+        [HttpPost]
+        public ActionResult Editar(Tblproducto productoEditado)
+        {
+            try
+            {
+                FacturacionContext db = new FacturacionContext();
+                var productoOriginal = db.Tblproductos.Find(productoEditado.IdProducto);
+                if (productoOriginal != null)
                 {
+                    productoOriginal.StrNombre = productoEditado.StrNombre;
+                    productoOriginal.StrCodigo = productoEditado.StrCodigo;
+                    productoOriginal.NumPrecioCompra = productoEditado.NumPrecioCompra;
+                    productoOriginal.NumPrecioVenta = productoEditado.NumPrecioVenta;
+                    productoOriginal.IdCategoria = productoEditado.IdCategoria;
+                    productoOriginal.StrDetalle = productoEditado.StrDetalle;
+                    productoOriginal.StrFoto = productoEditado.StrFoto;
+                    productoOriginal.NumStock = productoEditado.NumStock;
+                    productoOriginal.DtmFechaModifica = DateTime.Now;
+                    productoOriginal.StrUsuarioModifica = string.IsNullOrWhiteSpace(productoEditado.StrUsuarioModifica) ? Environment.UserName : productoEditado.StrUsuarioModifica;
                     db.SaveChanges();
-                    return RedirectToAction(nameof(Index));
+
+                    // Mensaje de éxito temporal
+                    TempData["SuccessMessage"] = "✅ Producto editado correctamente.";
+
                 }
-                catch (DbUpdateException dbEx)
-                {
-                    // Mostrar detalle de la excepción interna (útil para depuración)
-                    var detalle = dbEx.GetBaseException()?.Message ?? dbEx.Message;
-                    ModelState.AddModelError(string.Empty, "Error al guardar (DB): " + detalle);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Error al editar: " + ex.GetBaseException()?.Message ?? ex.Message);
+                FacturacionContext db2 = new FacturacionContext();
+                ViewBag.IdCategoria = new SelectList(db2.TblcategoriaProds, "IdCategoria", "StrDescripcion", productoEditado.IdCategoria);
+                return View(productoEditado);
+            }
+        }
 
-                    var erroresDb = ModelState
-                        .Where(kvp => kvp.Value != null && kvp.Value.Errors != null && kvp.Value.Errors.Count > 0)
-                        .Select(kvp => new
-                        {
-                            Key = kvp.Key,
-                            Errors = kvp.Value!.Errors.Select(e => string.IsNullOrEmpty(e.ErrorMessage) ? (e.Exception?.Message ?? "Error desconocido") : e.ErrorMessage).ToArray()
-                        }).ToList();
 
-                    ViewBag.ModelErrors = erroresDb;
-                    return View(producto);
+
+        [HttpGet]
+        public ActionResult Borrar(int id)
+        {
+            try
+            {
+                using (FacturacionContext db = new FacturacionContext())
+                {                     
+                    var producto = db.Tblproductos.Find(id);
+                    if (producto != null)
+                    {
+                        db.Tblproductos.Remove(producto);
+                        db.SaveChanges();
+
+                        // Mensaje de éxito temporal
+                        TempData["SuccessMessage"] = "✅ Producto eliminado correctamente.";
+                    }
+                    return RedirectToAction("Index");
                 }
             }
             catch (Exception ex)
             {
-                var baseMsg = ex.GetBaseException()?.Message ?? ex.Message;
-                ModelState.AddModelError(string.Empty, "Error al guardar: " + baseMsg);
-
-                var errores = ModelState
-                    .Where(kvp => kvp.Value != null && kvp.Value.Errors != null && kvp.Value.Errors.Count > 0)
-                    .Select(kvp => new
-                    {
-                        Key = kvp.Key,
-                        Errors = kvp.Value!.Errors.Select(e => string.IsNullOrEmpty(e.ErrorMessage) ? (e.Exception?.Message ?? "Error desconocido") : e.ErrorMessage).ToArray()
-                    })
-                    .ToList();
-
-                ViewBag.ModelErrors = errores;
-                return View(producto);
+                throw new Exception(ex.Message);
             }
         }
     }
