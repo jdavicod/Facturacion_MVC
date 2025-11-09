@@ -1,0 +1,75 @@
+﻿@model Facturacion_MVC.Models.Tblempleado
+
+@{
+    ViewData["Title"] = "Nuevo Empleado";
+}
+
+<div class="container mt-4 text-white">
+    <h2 class="fw-bold mb-4">Agregar Nuevo Empleado</h2>
+
+    <form asp-action="Nuevo" method="post" class="shadow p-4 rounded bg-dark">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Nombre</label>
+                <input asp-for="StrNombre" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Documento</label>
+                <input asp-for="NumDocumento" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Teléfono</label>
+                <input asp-for="StrTelefono" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Correo</label>
+                <input asp-for="StrEmail" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Dirección</label>
+                <input asp-for="StrDireccion" class="form-control" />
+            </div>
+            
+
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a asp-action="Index" class="btn btn-secondary">Volver</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #0d1117;
+        color: #f5f5f5;
+    }
+
+    .form-control {
+        background-color: #1c1f26;
+        color: white;
+        border: 1px solid #444;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+    }
+
+    .btn:hover {
+        opacity: 0.9;
+        transform: scale(1.02);
+        transition: 0.2s;
+    }
+</style>
+
