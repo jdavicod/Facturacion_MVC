@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Servicios MVC
 builder.Services.AddControllersWithViews();
 
-// Configuración según entorno
+// Configuraciï¿½n segï¿½n entorno
 if (builder.Environment.IsDevelopment())
 {
     builder.Configuration.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true)
@@ -19,7 +19,7 @@ else
     builder.Configuration.AddEnvironmentVariables();
 }
 
-// Construir cadena de conexión
+// Construir cadena de conexiï¿½n
 var baseConnection = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING")
                  ?? Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING")
                  ?? string.Empty;
@@ -58,7 +58,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Principal}/{action=Index}/{id?}");
 
-// Comprobación de conexión
+// Comprobaciï¿½n de conexiï¿½n
 try
 {
     using var scope = app.Services.CreateScope();
@@ -67,12 +67,12 @@ try
     if (dbContext.Database.CanConnect())
     {
         Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Conexión exitosa con la base de datos DB-facturacion-g7.");
+        Console.WriteLine("Conexiï¿½n exitosa con la base de datos DB-facturacion-g7.");
     }
     else
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("No se pudo establecer la conexión con la base de datos.");
+        Console.WriteLine("No se pudo establecer la conexiï¿½n con la base de datos.");
     }
     Console.ResetColor();
 }
