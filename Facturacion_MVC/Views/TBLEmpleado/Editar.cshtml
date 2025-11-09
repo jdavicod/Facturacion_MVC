@@ -1,0 +1,47 @@
+﻿@model Facturacion_MVC.Models.Tblempleado
+
+@{
+    ViewData["Title"] = "Editar Empleado";
+}
+
+<div class="container mt-4 text-white">
+    <h2 class="fw-bold mb-4">Editar Empleado</h2>
+
+    <form asp-action="Editar" method="post" class="shadow p-4 rounded bg-dark">
+        <input type="hidden" asp-for="IdEmpleado" />
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Nombre</label>
+                <input asp-for="StrNombre" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Documento</label>
+                <input asp-for="NumDocumento" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Teléfono</label>
+                <input asp-for="StrTelefono" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Correo</label>
+                <input asp-for="StrEmail" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Dirección</label>
+                <input asp-for="StrDireccion" class="form-control" />
+            </div>
+            
+
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>

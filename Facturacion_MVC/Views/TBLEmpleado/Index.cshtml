@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Facturacion_MVC.Models.Tblempleado>
+
+@{
+    ViewData["Title"] = "Empleados";
+}
+
+<div class="container mt-4">
+    <h2 class="fw-bold text-white mb-4">Empleados</h2>
+
+    <a asp-action="Nuevo" class="btn btn-primary mb-3">+ Agregar Empleado</a>
+
+    <!--  Contenedor con scroll vertical -->
+    <div style="max-height: 400px; overflow-y: auto;">
+        <table class="table table-dark table-hover align-middle shadow rounded">
+            <thead class="table-light text-center">
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Documento</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                    <th>Dirección</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                @foreach (var emp in Model)
+                {
+                        <tr>
+                            <td>@emp.IdEmpleado</td>
+                            <td>@emp.StrNombre</td>
+                            <td>@emp.NumDocumento</td>
+                            <td>@emp.StrTelefono</td>
+                            <td>@emp.StrEmail</td>
+                            <td>@emp.StrDireccion</td>
+                            <td>
+                                <a asp-action="Editar" asp-route-id="@emp.IdEmpleado" class="btn btn-info btn-sm me-2">
+                                    Editar
+                                </a>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="borrarFila(this)">Borrar</button>
+                            </td>
+                        </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function borrarFila(boton) {
+        const fila = boton.closest("tr");
+        if (fila) fila.remove();
+    }
+</script>
+
+<style>
+    body {
+        background-color: #0d1117;
+        color: #f5f5f5;
+    }
+
+    .table {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+
+    .btn-info {
+        background-color: #00bcd4;
+        border: none;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+    }
+
+    .btn:hover {
+        opacity: 0.9;
+        transform: scale(1.02);
+        transition: 0.2s;
+    }
+</style>
