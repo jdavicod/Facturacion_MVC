@@ -1,0 +1,547 @@
+﻿@{
+    ViewData["Title"] = "Clientes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.AntiForgeryToken()
+
+<style>
+    /* === Fondo general === */
+    body, .page-wrapper {
+        background: #F5F7FB !important;
+        color: #1f2937 !important;
+    }
+
+    .page-wrapper {
+        padding-bottom: 6rem !important;
+    }
+
+    /* === Tarjeta solo para encabezado === */
+    .card {
+        border: 0;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,.05);
+        background: #0d6efd;
+        color: #fff;
+        margin-bottom: 1.5rem;
+    }
+
+    .card-header {
+        background: transparent;
+        border: none;
+        color: #fff;
+    }
+
+    /* === Botones del encabezado === */
+    .toolbar .btn {
+        border: none;
+        background: #ffffff;
+        color: #0d6efd;
+        font-weight: 600;
+        box-shadow: 0 1px 2px rgba(0,0,0,.1);
+        transition: all .2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .toolbar .btn i {
+            font-size: 1.1rem;
+        }
+
+        .toolbar .btn:hover {
+            background: #0d6efd;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .toolbar .btn:disabled {
+            background: #f0f0f0 !important;
+            color: #9ca3af !important;
+            cursor: not-allowed;
+        }
+
+    /* === Filtro === */
+    .filter-container {
+        margin: 0.5rem 0 1rem 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: .5rem;
+    }
+
+        .filter-container label {
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .filter-container select {
+            border-radius: .25rem;
+            border: 1px solid #d1d5db;
+            padding: .25rem .5rem;
+            font-size: .9rem;
+            background: #fff;
+            color: #1f2937;
+        }
+
+    /* === Tabla flotante === */
+    #clientsTable {
+        background: #fff;
+        border-radius: 0.75rem;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        margin-bottom: 0 !important;
+    }
+
+        #clientsTable thead th {
+            background: #eaf2ff !important;
+            color: #111827 !important;
+            font-weight: 600;
+            border-bottom: 2px solid #dbeafe;
+        }
+
+        #clientsTable tbody td {
+            color: #1f2937 !important;
+        }
+
+        #clientsTable tbody tr:hover td {
+            background-color: #f9fafb !important;
+        }
+
+    .table-active td {
+        background-color: #e0ebff !important;
+    }
+
+    /* === DataTables === */
+    .dataTables_wrapper {
+        background: transparent !important; 
+        margin-bottom: 1rem !important;
+    }
+
+        .dataTables_wrapper .dataTables_info,
+        .dataTables_wrapper .dataTables_length label,
+        .dataTables_wrapper .dataTables_filter label,
+        .dataTables_wrapper .dataTables_paginate {
+            color: #1f2937 !important;
+            font-size: 0.9rem;
+        }
+
+    .dataTables_length select,
+    .dataTables_filter input {
+        border-radius: .25rem;
+        border: 1px solid #d1d5db;
+        padding: .2rem .4rem;
+        color: #1f2937 !important;
+        background: #fff;
+    }
+
+    /* === Paginación === */
+    .dataTables_wrapper .dataTables_paginate {
+        margin-top: 1rem !important;
+        display: flex;
+        justify-content: right;
+    }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            border-radius: .4rem;
+            border: none !important;
+            background: transparent !important;
+            color: #0d6efd !important;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+                background: #0d6efd !important;
+                color: #fff !important;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+                background: rgba(13, 110, 253, 0.1) !important;
+            }
+
+    /* === Bordes suaves === */
+    .table-bordered > :not(caption) > * > * {
+        border-color: #e5e7eb !important;
+    }
+
+    .toolbar .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        font-weight: 600;
+        padding: 0.4rem 0.9rem;
+        text-align: center;
+        min-width: 110px;
+    }
+
+
+        .toolbar .btn span {
+            font-size: 0.9rem;
+        }
+
+        .toolbar .btn i {
+            font-size: 1rem;
+        }
+
+        .toolbar .btn:hover {
+            background: #052E6C;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+
+    /* === Modales centrados y adaptativos === */
+    .modal-dialog {
+        max-width: 720px;
+        margin: auto;
+    }
+
+    .modal-content {
+        border-radius: 0.8rem !important;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        border: none;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+        .modal-body .form-label {
+            color: #1f2937 !important;
+            font-weight: 600;
+        }
+
+        .modal-body .form-check-label {
+            color: #1f2937 !important;
+            font-weight: 500;
+        }
+
+        .modal-body .form-control {
+            border-radius: 0.5rem;
+            border: 1px solid #d1d5db;
+            padding: 0.45rem 0.75rem;
+            color: #111827;
+        }
+
+            .modal-body .form-control:focus {
+                border-color: #0d6efd;
+                box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+            }
+
+
+        /* === Checkbox === */
+        .modal-body .form-check-label {
+            color: #1f2937 !important;
+            font-weight: 500;
+        }
+
+    /* === Footer === */
+    .modal-footer {
+        background: #f9fafb;
+        border-top: 1px solid #e5e7eb;
+        border-bottom-left-radius: 0.8rem;
+        border-bottom-right-radius: 0.8rem;
+        padding: 0.75rem 1.25rem;
+    }
+
+        .modal-footer .btn {
+            border-radius: 0.5rem;
+            font-weight: 500;
+        }
+
+</style>
+
+
+<div class="container-fluid py-4 page-wrapper">
+    <!-- Encabezado -->
+    <div class="card shadow-sm mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Gestión de Clientes</h5>
+            <div class="toolbar d-flex align-items-center gap-2">
+                <button id="btnAdd" class="btn btn-light btn-sm" title="Agregar nuevo cliente">
+                    <i class="bi bi-person-plus"></i> <span>Agregar</span>
+                </button>
+
+                <button id="btnEdit" class="btn btn-light btn-sm" title="Editar cliente seleccionado" disabled>
+                    <i class="bi bi-pencil-square"></i> <span>Editar</span>
+                </button>
+
+                <button id="btnDelete" class="btn btn-light btn-sm" title="Eliminar cliente seleccionado" disabled>
+                    <i class="bi bi-trash"></i> <span>Eliminar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtro y tabla -->
+    <div class="filter-container">
+        <label for="filterActivo" class="me-2">Estado:</label>
+        <select id="filterActivo" class="form-select form-select-sm w-auto">
+            <option value="">Todos</option>
+            <option value="true">Activos</option>
+            <option value="false">Inactivos</option>
+        </select>
+    </div>
+
+    <table id="clientsTable" class="table table-hover table-bordered align-middle text-center w-100 bg-white shadow-sm rounded-3">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Documento</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <th>Activo</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<!-- Modal Crear/Editar -->
+<div class="modal fade" id="clientModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <form id="clientForm" class="needs-validation" novalidate method="post">
+            <div class="modal-content shadow-lg border-0 rounded-4">
+                <div class="modal-header bg-primary text-white rounded-top-4">
+                    <h5 class="modal-title fw-semibold" id="clientModalTitle">Nuevo cliente</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body bg-white">
+                    <input type="hidden" id="idCliente" name="idCliente" />
+
+                    <div class="container-fluid">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold text-dark" for="strNombre">Nombre <span class="text-danger">*</span></label>
+                                <input class="form-control" id="strNombre" name="strNombre" required />
+                                <div class="invalid-feedback">El nombre es obligatorio.</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold text-dark" for="numDocumento">Documento</label>
+                                <input type="number" class="form-control" id="numDocumento" name="numDocumento" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold text-dark" for="strDireccion">Dirección</label>
+                                <input class="form-control" id="strDireccion" name="strDireccion" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold text-dark" for="strTelefono">Teléfono</label>
+                                <input class="form-control" id="strTelefono" name="strTelefono" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold text-dark" for="strEmail">Email</label>
+                                <input type="email" class="form-control" id="strEmail" name="strEmail"
+                                       placeholder="correo@ejemplo.com"
+                                       pattern="^[^@@\s]+@@[^@@\s]+\.[^@@\s]+$" />
+                            </div>
+
+                            <div class="col-md-6 d-flex align-items-end">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="activo" name="activo" />
+                                    <label class="form-check-label fw-semibold text-dark" for="activo">Activo</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer bg-light rounded-bottom-4">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary btn-sm" id="saveClient">Guardar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Confirmación Eliminar -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow-sm border-0">
+            <div class="modal-header bg-danger text-white rounded-top-4">
+                <h5 class="modal-title fw-semibold">Eliminar cliente</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-dark">¿Seguro que deseas eliminar este cliente?</div>
+            <div class="modal-footer bg-light rounded-bottom-4">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger btn-sm" id="confirmDeleteBtn">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(function () {
+            const antiToken = $('input[name="__RequestVerificationToken"]').first().val();
+            let selectedId = null;
+            let table;
+
+            function toast(type, msg) {
+                const el = $(`<div class="alert alert-${type} alert-dismissible fade show shadow-sm position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index:2000;" role="alert">${msg}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>`);
+                $('body').append(el);
+                setTimeout(() => el.alert('close'), 3000);
+            }
+
+            function loadAll() {
+                $.getJSON('@Url.Action("GetAll", "TBLClientes")', function (res) {
+                    const data = res?.data || [];
+
+                    if ($.fn.DataTable.isDataTable('#clientsTable')) {
+                        table.clear().rows.add(data).draw();
+                    } else {
+                        table = $('#clientsTable').DataTable({
+                            data: data,
+                            columns: [
+                                { data: 'idCliente' },
+                                { data: 'strNombre' },
+                                { data: 'numDocumento' },
+                                { data: 'strDireccion' },
+                                { data: 'strTelefono' },
+                                { data: 'strEmail' },
+                                { data: 'activo', render: d => d ? 'Sí' : 'No' }
+                            ],
+                            pageLength: 4,
+                            lengthMenu: [ [4, 8, 10, 20], [4, 8, 10, 20] ],
+                            responsive: true,
+                            autoWidth: false,
+                            language: {
+                                url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
+                            }
+                        });
+
+                        // Filtro de estado
+                        $('#filterActivo').on('change', function () {
+                            const val = this.value;
+                            if (val === '') table.column(6).search('').draw();
+                            else table.column(6).search(val === 'true' ? '^Sí$' : '^No$', true, false).draw();
+                        });
+                    }
+                }).fail(() => toast('danger', 'Error cargando datos.'));
+            }
+
+            loadAll();
+
+            // Seleccionar fila
+            $('#clientsTable').on('click', 'tbody tr', function () {
+                if ($(this).hasClass('table-active')) {
+                    $(this).removeClass('table-active');
+                    selectedId = null;
+                    $('#btnEdit, #btnDelete').prop('disabled', true);
+                } else {
+                    table.$('tr.table-active').removeClass('table-active');
+                    $(this).addClass('table-active');
+                    const rowData = table.row(this).data();
+                    selectedId = rowData ? rowData.idCliente : null;
+                    $('#btnEdit, #btnDelete').prop('disabled', !selectedId);
+                }
+            });
+
+            // Agregar
+            $('#btnAdd').on('click', function () {
+                $('#clientForm')[0].reset();
+                $('#clientForm').removeClass('was-validated');
+                $('#idCliente').val('');
+                $('#clientModalTitle').text('Agregar cliente');
+                new bootstrap.Modal('#clientModal').show();
+            });
+
+            // Editar
+            $('#btnEdit').on('click', function () {
+                if (!selectedId) return;
+                const c = table.row('.table-active').data();
+                if (!c) return;
+
+                $('#clientForm')[0].reset();
+                $('#clientForm').removeClass('was-validated');
+                $('#idCliente').val(c.idCliente);
+                $('#strNombre').val(c.strNombre || '');
+                $('#numDocumento').val(c.numDocumento || '');
+                $('#strDireccion').val(c.strDireccion || '');
+                $('#strTelefono').val(c.strTelefono || '');
+                $('#strEmail').val(c.strEmail || '');
+                $('#activo').prop('checked', !!c.activo);
+                $('#clientModalTitle').text('Editar cliente');
+                new bootstrap.Modal('#clientModal').show();
+            });
+
+            // Guardar
+            $('#clientForm').on('submit', function (e) {
+                e.preventDefault();
+                const form = this;
+                form.classList.add('was-validated');
+                if (!form.checkValidity()) return;
+
+                const id = $('#idCliente').val();
+                const payload = {
+                    idCliente: id ? parseInt(id) : 0,
+                    strNombre: $('#strNombre').val(),
+                    numDocumento: $('#numDocumento').val() ? parseInt($('#numDocumento').val()) : null,
+                    strDireccion: $('#strDireccion').val(),
+                    strTelefono: $('#strTelefono').val(),
+                    strEmail: $('#strEmail').val(),
+                    activo: $('#activo').is(':checked')
+                };
+
+                const url = id ? '@Url.Action("Edit", "TBLClientes")' : '@Url.Action("Create", "TBLClientes")';
+
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: payload,
+                    headers: { 'RequestVerificationToken': antiToken },
+                    success: function (res) {
+                        if (res?.success) {
+                            bootstrap.Modal.getInstance(document.getElementById('clientModal')).hide();
+                            toast('success', res.message || 'Guardado.');
+                            loadAll();
+                        } else toast('danger', res?.message || 'Error al guardar.');
+                    },
+                    error: () => toast('danger', 'Error en la petición.')
+                });
+            });
+
+            // Eliminar
+            $('#btnDelete').on('click', function () {
+                if (!selectedId) return;
+                new bootstrap.Modal('#confirmDeleteModal').show();
+            });
+
+            $('#confirmDeleteBtn').on('click', function () {
+                if (!selectedId) return;
+                $.ajax({
+                    url: '@Url.Action("Delete", "TBLClientes")',
+                    method: 'POST',
+                    data: { id: selectedId },
+                    headers: { 'RequestVerificationToken': antiToken },
+                    success: function (res) {
+                        if (res?.success) {
+                            bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal')).hide();
+                            toast('success', res.message || 'Eliminado.');
+                            loadAll();
+                        } else toast('danger', res?.message || 'Error al eliminar.');
+                    },
+                    error: () => toast('danger', 'Error en la petición.')
+                });
+            });
+        });
+    </script>
+}
