@@ -13,8 +13,9 @@ namespace Facturacion_MVC.Controllers
         public IActionResult Index()
         {
             using var db = new FacturacionContext();
-            var productos = db.Tblproductos.ToList();
-            return View(productos);
+            var productos = db.Tblproductos
+                .Include(p => p.IdCategoriaNavigation)
+            .ToList(); return View(productos);
         }
 
         // GET: Mostrar formulario
@@ -127,7 +128,7 @@ namespace Facturacion_MVC.Controllers
             try
             {
                 using (FacturacionContext db = new FacturacionContext())
-                {                     
+                {
                     var producto = db.Tblproductos.Find(id);
                     if (producto != null)
                     {
